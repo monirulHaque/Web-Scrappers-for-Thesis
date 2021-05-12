@@ -42,7 +42,7 @@ try:
 
 except:
     print("Error")
-print(title)
+    
 aString = addQuotes(title) + "," + \
   addQuotes(reporter) + "," + \
     addQuotes(publishingDate) + "," + \
