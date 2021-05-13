@@ -50,7 +50,7 @@ aString = addQuotes(title) + "," + \
         addQuotes(metaDesc) + "," + \
           addQuotes(newsDesc) + "," + link + "," + str(ads)
 
-file = open('clickbait_news_data.csv', mode='w+', encoding='utf-8')
+file = open('clickbait_news_data2.csv', mode='w+', encoding='utf-8')
 file.write(aString)
 file.close()
 time.sleep(4)
