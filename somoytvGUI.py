@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
+from os import path
 import time
 PATH = "C:\Program Files (x86)\chromedriver.exe"
 driver = webdriver.Chrome(PATH)
@@ -13,14 +14,15 @@ def addQuotes(oldString):
   return newString
 
 sg.theme('DarkAmber')
+col  = [[ sg.Text(size=(135,50), key='-news-')]]
 layout = [[sg.Text("URL input: "), sg.Input(key='-IN-'), sg.Checkbox('Clickbait', key="-clickbaitCheck-", size=(12, 1), default=True), sg.Button('Scrap'), sg.Button('Add to CSV'), sg.Button('Close'), sg.Text(size=(20,1), text_color="#3ad282", key="-message-")], \
     [sg.Text("Title: "), sg.Text(size=(120,1), key='-title-')], \
         [sg.Text("Meta Keys: "), sg.Text(size=(120,1), key='-metaKeys-')], \
-            [sg.Text("Meta Description: "), sg.Text(size=(120,2), key='-metaDesc-')], \
+            [sg.Text("Meta Description: "), sg.Text(size=(120,3), key='-metaDesc-')], \
                 [sg.Text("Report Desk: "), sg.Text(size=(30,1), key='-reporter-'), sg.Text("Time: "), sg.Text(size=(20,1), key='-time-'), sg.Text("Ads: "), sg.Text(size=(5,1), key='-ads-'), sg.Text("Clickbait: "), sg.Text(size=(5,1), key='-clickbait-')], \
                     [sg.Text("Link: "), sg.Text(size=(120,1), key='-link-')], \
                         [sg.Text("Full news: ")], \
-                            [sg.Text(size=(120,25), key='-news-')]]
+                            [sg.Column(col, size=(1100,300), scrollable=True)]]
 
 
 window = sg.Window("SomoyTV Manual Scrapper", layout)
@@ -75,10 +77,15 @@ while True:
                         addQuotes(metaDesc) + "," + \
                             addQuotes(newsDesc) + "," + \
                                 link + "," + str(ads) + "," + str(clickbait) + "\n"
-        file = open('clickbait_news_data.csv', mode='a', encoding='utf-8')
+        if path.exists('somoytv.csv'):
+            file = open('somoytv.csv', mode='a', encoding='utf-8')
+        else:
+            file = open('somoytv.csv', mode='w+', encoding='utf-8')
         file.write(aString)
         file.close()
         window['-message-'].update("Successfully Added!")
+    else: 
+        window['-message-'].update("")
 
 window.close()
 driver.close()
