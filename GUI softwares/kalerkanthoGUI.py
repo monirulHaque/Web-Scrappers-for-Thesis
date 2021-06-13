@@ -40,14 +40,14 @@ while True:
         # Removing ads
         iframes = driver.find_elements_by_tag_name("iframe")
         ads = len(iframes)
-        # if ads > 0:
-        #     driver.execute_script("""
-        #         var elems = document.getElementsByTagName("iframe"); 
-        #         for(var i = 0, max = elems.length; i < max; i++)
-        #         {
-        #             elems[i].hidden=true;
-        #         }
-        #         """)
+        if ads > 0:
+            driver.execute_script("""
+                var elems = document.getElementsByTagName("iframe"); 
+                for(var i = 0, max = elems.length; i < max; i++)
+                {
+                    elems[i].hidden=true;
+                }
+                """)
         title = driver.find_element_by_tag_name("title").text
         link = address
         metaKeys = driver.find_element_by_name("keywords").get_attribute("content")
