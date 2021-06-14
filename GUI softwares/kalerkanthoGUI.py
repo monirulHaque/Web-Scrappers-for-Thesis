@@ -10,8 +10,8 @@ PATH = "C:\Program Files (x86)\chromedriver.exe"
 driver = webdriver.Chrome(PATH)
 
 def addQuotes(oldString):
-  newString = "\"" + oldString + "\""
-  return newString
+    newString = "\"" + oldString + "\""
+    return newString
 
 sg.theme('DarkAmber')
 col  = [[ sg.Text(size=(135,50), key='-news-')]]

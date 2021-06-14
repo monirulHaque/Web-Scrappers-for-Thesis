@@ -10,8 +10,8 @@ PATH = "C:\Program Files (x86)\chromedriver.exe"
 driver = webdriver.Chrome(PATH)
 
 def addQuotes(oldString):
-  newString = "\"" + oldString + "\""
-  return newString
+    newString = "\"" + oldString + "\""
+    return newString
 
 sg.theme('DarkAmber')
 col  = [[ sg.Text(size=(135,50), key='-news-')]]
@@ -48,7 +48,7 @@ while True:
                     elems[i].hidden=true;
                 }
                 """)
-        title = driver.find_element_by_tag_name("title").text
+        title = driver.find_element_by_tag_name("h1").text
         link = address.rsplit("/",1)[0]
         metaKeys = driver.find_element_by_name("keywords").get_attribute("content")
         metaDesc = driver.find_element_by_name("description").get_attribute("content")
@@ -60,7 +60,10 @@ while True:
         publishingDate = publishingDate.split("\n",1)[1]
         publishingDate = publishingDate.split(":",1)[1].strip()
         # print(publishingDate)
-        newsDesc = driver.find_element_by_class_name("dtl_section").text
+        paraList = driver.find_element_by_class_name("dtl_section").find_elements_by_tag_name("p")
+        newsDesc = ""
+        for para in paraList:
+            newsDesc += para.text + " "
         clickbait = values['-clickbaitCheck-']
     except Exception as e:
         print(e)
