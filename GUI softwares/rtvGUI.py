@@ -35,7 +35,7 @@ while True:
     driver.get(address)
     try:
         element = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "dtl_section"))
+            EC.presence_of_element_located((By.TAG_NAME, "p"))
         )
         # Removing ads
         iframes = driver.find_elements_by_tag_name("iframe")

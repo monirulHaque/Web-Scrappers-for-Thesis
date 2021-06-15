@@ -51,9 +51,9 @@ def getData(address):
     newsDescList = driver2.find_elements_by_class_name("description")
     newsDesc = ''
     for para in newsDescList:
-        newsDesc += para.text
+      newsDesc += para.text
   except Exception as e:
-      print(e)
+    print(e)
   driver2.quit()
 
   aString = address + "," + \
