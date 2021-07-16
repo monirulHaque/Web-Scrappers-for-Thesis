@@ -30,7 +30,7 @@ def getData(address):
   driver2 = webdriver.Chrome(PATH)
   driver2.get(address)
   try:
-    element = WebDriverWait(driver2, 15).until(
+    element = WebDriverWait(driver2, 30).until(
       EC.presence_of_element_located((By.CLASS_NAME, "dtl_section"))
     )
   except Exception as e:
@@ -54,7 +54,10 @@ def getData(address):
   category = driver2.find_element_by_class_name("breadcrumb").find_element_by_class_name("child").find_element_by_tag_name("a").text
   category = category.strip()
   # reporter = driver.find_element_by_xpath("//*[@class='rpt_name mt-2']").text
-  reporter = driver2.find_element_by_css_selector('.rpt_name.mt-2').text
+  try:
+    reporter = driver2.find_element_by_css_selector('.rpt_name.mt-2').text
+  except:
+    reporter =""
   publishingDate = driver2.find_element_by_class_name("rpt_name.border-top.mt-1.pt-1").text
   # publishingDate = publishingDate.split("\n",1)[1]
   publishingDate = publishingDate.split(",",1)[0].strip()
@@ -84,7 +87,7 @@ if __name__ == '__main__':
   driver = webdriver.Chrome(PATH)
 
   # Adress of SomoyTV news category 
-  for i in range(1,3):
+  for i in range(30,100):
     site = f"https://www.rtvonline.com/all-news/?pg={i}"
     driver.get(site)
     time.sleep(2)
