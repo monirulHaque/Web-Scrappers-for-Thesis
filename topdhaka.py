@@ -27,7 +27,7 @@ def makeCSV(name):
 def getData(address):
   global allNews
   global count
-  driver2 = webdriver.Chrome(PATH)
+  driver2 = webdriver.Chrome(chrome_options=chrome_options, executable_path=PATH)
   driver2.get(address)
   try:
     element = WebDriverWait(driver2, 50).until(
@@ -54,11 +54,13 @@ def getData(address):
     metaDesc = 'N/A'
     category = 'N/A'
     reporter = 'N/A'
-    publishingDate = driver2.find_element_by_css_selector('.entry-meta-date.updated').text
-    paraList = driver2.find_element_by_css_selector(".entry-content.mh-clearfix").find_elements_by_tag_name("p")
+    publishingTime = driver2.find_element_by_xpath("//meta[@property='article:published_time']").get_attribute("content").split("T")
+    publishingDate = publishingTime[0]
+    # print(publishingDate)
+    paraList = driver2.find_element_by_class_name("entry").find_elements_by_tag_name("p")
     newsDesc = ""
     for para in paraList:
-      newsDesc += para.text + "\n"
+        newsDesc += para.text + "\n"
     driver2.quit()
 
     aString = address + "," + \
@@ -78,22 +80,26 @@ def getData(address):
 
 if __name__ == '__main__':
   # Initializing chrome driver in selenium bot
+  chrome_options = webdriver.ChromeOptions()
+  prefs = {"profile.managed_default_content_settings.images": 2}
+  chrome_options.add_experimental_option("prefs", prefs)
+
   PATH = "C:\Program Files (x86)\chromedriver.exe"
-  driver = webdriver.Chrome(PATH)
+  driver = webdriver.Chrome(chrome_options=chrome_options, executable_path=PATH)
 
   # Adress of SomoyTV news category 
-  for i in range(330,400):
-    site = f"https://newzcitizen.com/page/{i}"
+  for i in range(1,5):
+    site = f"https://topdhaka.com/page/{i}/"
     driver.get(site)
     time.sleep(2)
 
     # Making a list of the links of news found on the page
-    newsList = driver.find_elements_by_css_selector(".entry-title.mh-loop-title")
+    newsList = driver.find_elements_by_class_name("post-box-title")
     for news in newsList:
       address = news.find_element_by_tag_name("a").get_attribute("href")
       getData(address)
 
-    makeCSV('newzcitizen4')
+    makeCSV('TopDhaka')
 
   time.sleep(10)
   driver.quit()
