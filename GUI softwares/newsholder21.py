@@ -25,7 +25,7 @@ layout = [[sg.Text("URL input: "), sg.Input(key='-IN-'), sg.Checkbox('Clickbait'
                             [sg.Column(col, size=(1100,300), scrollable=True)]]
 
 
-window = sg.Window("Newzcitizen Manual Scrapper", layout)
+window = sg.Window("Newsholder21 Manual Scrapper", layout)
 
 while True:
     event, values = window.read()
@@ -58,7 +58,7 @@ while True:
         publishingTime = driver.find_element_by_xpath("//meta[@property='article:published_time']").get_attribute("content").split("T")
         publishingDate = publishingTime[0]
         # print(publishingDate)
-        paraList = driver.find_element_by_class_name("entry").find_elements_by_tag_name("p")
+        paraList = driver.find_element_by_class_name("entry-content").find_elements_by_tag_name("p")
         newsDesc = ""
         for para in paraList:
             newsDesc += para.text + "\n"
@@ -84,10 +84,10 @@ while True:
                         addQuotes(metaDesc) + "," + \
                             addQuotes(newsDesc) + "," + \
                                 link + "," + str(ads) + "," + str(clickbait) + "\n"
-        if path.exists('topdhaka.csv'):
-            file = open('topdhaka.csv', mode='a', encoding='utf-8')
+        if path.exists('newsholder21.csv'):
+            file = open('newsholder21.csv', mode='a', encoding='utf-8')
         else:
-            file = open('topdhaka.csv', mode='w+', encoding='utf-8')
+            file = open('newsholder21.csv', mode='w+', encoding='utf-8')
         file.write(aString)
         file.close()
         window['-message-'].update("Successfully Added!")
