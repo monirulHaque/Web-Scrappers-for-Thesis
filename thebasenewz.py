@@ -53,12 +53,11 @@ def getData(address):
     metaKeys = 'N/A'
     metaDesc = 'N/A'
     category = 'N/A'
-    # reporter = driver.find_element_by_xpath("//*[@class='rpt_name mt-2']").text
     reporter = 'N/A'
     publishingTime = driver2.find_element_by_xpath("//meta[@property='article:published_time']").get_attribute("content").split("T")
     publishingDate = publishingTime[0]
     # print(publishingDate)
-    paraList = driver2.find_element_by_class_name("entry").find_elements_by_tag_name("p")
+    paraList = driver2.find_element_by_class_name("entry-content").find_elements_by_tag_name("p")
     newsDesc = ""
     for para in paraList:
         newsDesc += para.text + "\n"
@@ -89,18 +88,18 @@ if __name__ == '__main__':
   driver = webdriver.Chrome(chrome_options=chrome_options, executable_path=PATH)
 
   # Adress of SomoyTV news category 
-  for i in range(1,50):
-    site = f"https://newzauthority.com/page/{i}"
+  for i in range(1,25):
+    site = f"https://thebasenewz.com/page/{i}/"
     driver.get(site)
     time.sleep(2)
 
     # Making a list of the links of news found on the page
-    newsList = driver.find_elements_by_class_name("post-box-title")
+    newsList = driver.find_elements_by_class_name("entry-title")
     for news in newsList:
       address = news.find_element_by_tag_name("a").get_attribute("href")
       getData(address)
 
-    makeCSV('newzauthority')
+    makeCSV('thebasenewz')
 
   time.sleep(10)
   driver.quit()
