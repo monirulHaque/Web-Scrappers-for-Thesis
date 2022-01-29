@@ -25,7 +25,7 @@ layout = [[sg.Text("URL input: "), sg.Input(key='-IN-'), sg.Checkbox('Clickbait'
                             [sg.Column(col, size=(1100,300), scrollable=True)]]
 
 
-window = sg.Window("RTV Manual Scrapper", layout)
+window = sg.Window("Newzcitizen Manual Scrapper", layout)
 
 while True:
     event, values = window.read()
@@ -35,7 +35,7 @@ while True:
     driver.get(address)
     try:
         element = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "some-class-name2"))
+            EC.presence_of_element_located((By.TAG_NAME, "p"))
         )
         # Removing ads
         iframes = driver.find_elements_by_tag_name("iframe")
@@ -48,22 +48,23 @@ while True:
                     elems[i].hidden=true;
                 }
                 """)
-        title = driver.find_element_by_xpath("//meta[@property='og:title']").get_attribute("content").split("|")[0]
-        # title = title.split("|")
+        title = driver.find_element_by_xpath(
+            "//meta[@property='og:title']").get_attribute("content")
         link = address
-        metaKeys = driver.find_element_by_name("keywords").get_attribute("content")
-        metaDesc = driver.find_element_by_name("description").get_attribute("content")
-        category = ""
-        reporter = driver.find_element_by_css_selector('.col-xs-12.col-md-9.row').text
-        publishingDate = reporter.split('\n',1)
-        reporter = publishingDate[0]
-        publishingDate = publishingDate[1]
-        publishingDate = publishingDate.split('|',1)[0].strip()
-        # publishingDate = driver.find_element_by_class_name("rpt_name.border-top.mt-1.pt-1").text
-        # publishingDate = publishingDate.split("\n",1)[1]
-        # publishingDate = publishingDate.split(":",1)[1].strip()
+        metaKeys = 'N/A'
+        metaDesc = 'N/A'
+        category = 'N/A'
+        reporter = 'N/A'
+        publishingTime = driver.find_element_by_xpath(
+            "//meta[@property='article:published_time']").get_attribute("content").split("T")
+        publishingDate = publishingTime[0]
         # print(publishingDate)
-        newsDesc = driver.find_element_by_class_name("some-class-name2").text
+        # paraList = driver.find_element_by_class_name(
+        #     "entry-content")
+        newsDesc = driver.find_element_by_css_selector(".entry-content.clearfix.single-post-content").text
+        # for para in paraList:
+        #     newsDesc += para.text + "\n"
+        driver.quit()
         clickbait = values['-clickbaitCheck-']
     except Exception as e:
         print(e)
@@ -74,7 +75,7 @@ while True:
     window['-reporter-'].update(reporter)
     window['-ads-'].update(ads)
     window['-category-'].update(category)
-    window['-clickbait-'].update(clickbait)
+    # window['-clickbait-'].update(clickbait)
     window['-time-'].update(publishingDate)
     window['-link-'].update(link)
     window['-news-'].update(newsDesc)
@@ -86,10 +87,10 @@ while True:
                         addQuotes(metaDesc) + "," + \
                             addQuotes(newsDesc) + "," + \
                                 link + "," + str(ads) + "," + str(clickbait) + "\n"
-        if path.exists('kalerkantho.csv'):
-            file = open('kalerkantho.csv', mode='a', encoding='utf-8')
+        if path.exists('beanibazar.csv'):
+            file = open('beanibazar.csv', mode='a', encoding='utf-8')
         else:
-            file = open('kalerkantho.csv', mode='w+', encoding='utf-8')
+            file = open('beanibazar.csv', mode='w+', encoding='utf-8')
         file.write(aString)
         file.close()
         window['-message-'].update("Successfully Added!")
